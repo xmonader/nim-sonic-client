@@ -79,7 +79,7 @@ OK
 ```
 ## API reference
 
-API documentation can be found at [docs/api](./docs/api/sonic.html) and also [Browsable](https://xmonader.github.io/nim-sonic-client/api/sonic/sonic.html)
+API documentation can be found at [docs/api](./docs/api/sonic.html) and also [Browsable](https://xmonader.github.io/nim-sonic-client/api/sonic.html)
 
 ### Generating docs
 use `nimble genDocs`
