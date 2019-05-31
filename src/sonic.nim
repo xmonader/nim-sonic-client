@@ -4,7 +4,7 @@
 import strformat, tables, json, strutils, sequtils, hashes, net, asyncdispatch, asyncnet, os, strutils, parseutils, deques, options, net
 
 type 
-  SonicChannel {.pure.} = enum 
+  SonicChannel* {.pure.} = enum
    Ingest
    Search
    Control
@@ -47,10 +47,8 @@ proc isError(response: string): bool =
   ##  - response   response string
   ##  Returns:
   ##    bool  true if response is an error.
-  
-  if response.startsWith("ERR "):
-     result = true
-  result = false
+
+  response.startsWith("ERR ")
 
 
 proc raiseForError(response:string): string =
@@ -93,10 +91,10 @@ proc open*(host = "localhost", port = 1491, password="", channel:SonicChannel, s
    if ssl == true:
      SSLifySonicConnectionNoVerify(result)
   result.socket.connect(host, port.Port)
-  
+
   result.startSession()
-  
-proc openAsync*(host = "localhost", port = 1491, password="", ssl=false, timeout=0): Future[AsyncSonic] {.async.} =
+
+proc openAsync*(host = "localhost", port = 1491, password="", channel:SonicChannel, ssl=false, timeout=0): Future[AsyncSonic] {.async.} =
   ## Open an asynchronous connection to a Sonic server.
   result = AsyncSonic(
    socket: newAsyncSocket(buffered = true),
