@@ -4,7 +4,7 @@
 import strformat, tables, json, strutils, sequtils, hashes, net, asyncdispatch, asyncnet, os, strutils, parseutils, deques, options, net
 
 type 
-  SonicChannel {.pure.} = enum 
+  SonicChannel* {.pure.} = enum
    Ingest
    Search
    Control
@@ -47,10 +47,8 @@ proc isError(response: string): bool =
   ##  - response   response string
   ##  Returns:
   ##    bool  true if response is an error.
-  
-  if response.startsWith("ERR "):
-     result = true
-  result = false
+
+  response.startsWith("ERR ")
 
 
 proc raiseForError(response:string): string =
@@ -68,17 +66,17 @@ proc startSession*(this:Sonic|AsyncSonic): Future[void] {.multisync.} =
 
   if "CONNECTED" in resp:
    this.connected = true
-  
+
   var channelName = ""
   case this.channel:
    of SonicChannel.Ingest:  channelName = "ingest"
    of SonicChannel.Search:  channelName = "search"
    of SonicChannel.COntrol: channelName = "control"
-  
+
   let msg = fmt"START {channelName} {this.password} \r\n"
   await this.socket.send(msg)  #### start
   discard await this.socket.recvLine()  #### started. FIXME extract protocol bufsize
-  
+
 proc open*(host = "localhost", port = 1491, password="", channel:SonicChannel, ssl=false, timeout=0): Sonic =
   result = Sonic(
    socket: newSocket(buffered = true),
@@ -93,10 +91,10 @@ proc open*(host = "localhost", port = 1491, password="", channel:SonicChannel, s
    if ssl == true:
      SSLifySonicConnectionNoVerify(result)
   result.socket.connect(host, port.Port)
-  
+
   result.startSession()
-  
-proc openAsync*(host = "localhost", port = 1491, password="", ssl=false, timeout=0): Future[AsyncSonic] {.async.} =
+
+proc openAsync*(host = "localhost", port = 1491, password="", channel:SonicChannel, ssl=false, timeout=0): Future[AsyncSonic] {.async.} =
   ## Open an asynchronous connection to a Sonic server.
   result = AsyncSonic(
    socket: newAsyncSocket(buffered = true),
@@ -116,7 +114,7 @@ proc receiveManaged*(this:Sonic|AsyncSonic, size=1): Future[string] {.multisync.
      result = this.socket.recvLine(timeout=this.timeout)
   else:
    result = await this.socket.recvLine()
-  
+
   result = raiseForError(result.strip())
 
 proc execCommand*(this: Sonic|AsyncSonic, command: string, args:seq[string]): Future[string] {.multisync.} =
@@ -132,7 +130,6 @@ proc ping*(this: Sonic|AsyncSonic): Future[bool] {.multisync.} =
   ## Send ping command to the server
   ## Returns:
   ## bool  True if successfully reaching the server.
-  
   result = (await this.execCommand("PING")) == "PONG"
 
 proc quit*(this: Sonic|AsyncSonic): Future[string] {.multisync.} =
@@ -193,7 +190,6 @@ proc flushCollection*(this: Sonic|AsyncSonic, collection: string): Future[int] {
    ##  - collection index collection (ie. what you search in, eg. messages, products, etc.)
    ##   Returns:
    ##     int  number of flushed data
-   
    result = (await this.execCommand("FLUSHC", @[collection])).parseInt
 
 proc flushBucket*(this: Sonic|AsyncSonic, collection, bucket: string): Future[int] {.multisync.} =
@@ -202,7 +198,6 @@ proc flushBucket*(this: Sonic|AsyncSonic, collection, bucket: string): Future[in
    ##   - bucket: index bucket name (ie. user-specific search classifier in the collection if you have any eg. user-1, user-2, .., otherwise use a common bucket name eg. generic, procault, common, ..)
    ##   Returns:
    ##    int  number of flushed data
-   
    result = (await this.execCommand("FLUSHB", @[collection, bucket])).parseInt
 
 proc flushObject*(this: Sonic|AsyncSonic, collection, bucket, objectName: string): Future[int] {.multisync.} =
@@ -212,7 +207,6 @@ proc flushObject*(this: Sonic|AsyncSonic, collection, bucket, objectName: string
    ##   - objectName: object identifier that refers to an entity in an external database, where the searched object is stored (eg. you use Sonic to index CRM contacts by name; full CRM contact data is stored in a MySQL database; in this case the object identifier in Sonic will be the MySQL primary key for the CRM contact)
    ##   Returns:
    ##     int  number of flushed data
-   
    result = (await this.execCommand("FLUSHO", @[collection, bucket, objectName])).parseInt
 
 proc flush*(this: Sonic|AsyncSonic, collection: string, bucket="", objectName=""): Future[int] {.multisync.} =
@@ -239,7 +233,6 @@ proc query*(this: Sonic|AsyncSonic, collection, bucket, terms: string, limit=10,
   ##  - lang an ISO 639-3 locale code eg. eng for English (if set, the locale must be a valid ISO 639-3 code; if not set, the locale will be guessed from text).
   ##  Returns:
   ##    list  list of objects ids.
-   
   let limitString = fmt"LIMIT({limit})"
   var langString = ""
   if lang != "":
