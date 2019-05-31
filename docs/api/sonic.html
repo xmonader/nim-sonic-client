@@ -1241,7 +1241,10 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#Sonic"
+      <li><a class="reference" href="#SonicChannel"
+    title="SonicChannel {.pure.} = enum
+  Ingest, Search, Control"><wbr />Sonic<wbr />Channel<span class="attachedType" style="visibility:hidden"></span></a></li>
+  <li><a class="reference" href="#Sonic"
     title="Sonic = ref object of SonicBase[Socket]"><wbr />Sonic<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#AsyncSonic"
     title="AsyncSonic = ref object of SonicBase[AsyncSocket]"><wbr />Async<wbr />Sonic<span class="attachedType" style="visibility:hidden"></span></a></li>
@@ -1258,9 +1261,9 @@ function main() {
   <li><a class="reference" href="#open%2Cstring%2Cint%2Cstring%2CSonicChannel%2Cint"
     title="open(host = &quot;localhost&quot;; port = 1491; password = &quot;&quot;; channel: SonicChannel; ssl = false;
      timeout = 0): Sonic"><wbr />open<span class="attachedType" style="visibility:hidden">Sonic</span></a></li>
-  <li><a class="reference" href="#openAsync%2Cstring%2Cint%2Cstring%2Cint"
-    title="openAsync(host = &quot;localhost&quot;; port = 1491; password = &quot;&quot;; ssl = false; timeout = 0): Future[
-    AsyncSonic]"><wbr />open<wbr />Async<span class="attachedType" style="visibility:hidden">AsyncSonic</span></a></li>
+  <li><a class="reference" href="#openAsync%2Cstring%2Cint%2Cstring%2CSonicChannel%2Cint"
+    title="openAsync(host = &quot;localhost&quot;; port = 1491; password = &quot;&quot;; channel: SonicChannel;
+          ssl = false; timeout = 0): Future[AsyncSonic]"><wbr />open<wbr />Async<span class="attachedType" style="visibility:hidden">AsyncSonic</span></a></li>
   <li><a class="reference" href="#receiveManaged%2CAsyncSonic%2Cint"
     title="receiveManaged(this: AsyncSonic; size = 1): Future[string]"><wbr />receive<wbr />Managed<span class="attachedType" style="visibility:hidden">AsyncSonic</span></a></li>
   <li><a class="reference" href="#receiveManaged%2CSonic%2Cint"
@@ -1342,6 +1345,13 @@ function main() {
   <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
+<a id="SonicChannel"></a>
+<dt><pre><a href="sonic.html#SonicChannel"><span class="Identifier">SonicChannel</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">Ingest</span><span class="Other">,</span> <span class="Identifier">Search</span><span class="Other">,</span> <span class="Identifier">Control</span></pre></dt>
+<dd>
+
+
+</dd>
 <a id="Sonic"></a>
 <dt><pre><a href="sonic.html#Sonic"><span class="Identifier">Sonic</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">SonicBase</span><span class="Other">[</span><span class="Identifier">Socket</span><span class="Other">]</span></pre></dt>
 <dd>
@@ -1374,16 +1384,17 @@ function main() {
 
 </dd>
 <a id="open,string,int,string,SonicChannel,int"></a>
-<dt><pre><span class="Keyword">proc</span> <span class="Identifier">open</span><span class="Other">(</span><span class="Identifier">host</span> <span class="Other">=</span> <span class="StringLit">&quot;localhost&quot;</span><span class="Other">;</span> <span class="Identifier">port</span> <span class="Other">=</span> <span class="DecNumber">1491</span><span class="Other">;</span> <span class="Identifier">password</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">channel</span><span class="Other">:</span> <span class="Identifier">SonicChannel</span><span class="Other">;</span>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">open</span><span class="Other">(</span><span class="Identifier">host</span> <span class="Other">=</span> <span class="StringLit">&quot;localhost&quot;</span><span class="Other">;</span> <span class="Identifier">port</span> <span class="Other">=</span> <span class="DecNumber">1491</span><span class="Other">;</span> <span class="Identifier">password</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">channel</span><span class="Other">:</span> <a href="sonic.html#SonicChannel"><span class="Identifier">SonicChannel</span></a><span class="Other">;</span>
          <span class="Identifier">ssl</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">;</span> <span class="Identifier">timeout</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <a href="sonic.html#Sonic"><span class="Identifier">Sonic</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span>
     <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 </dd>
-<a id="openAsync,string,int,string,int"></a>
-<dt><pre><span class="Keyword">proc</span> <span class="Identifier">openAsync</span><span class="Other">(</span><span class="Identifier">host</span> <span class="Other">=</span> <span class="StringLit">&quot;localhost&quot;</span><span class="Other">;</span> <span class="Identifier">port</span> <span class="Other">=</span> <span class="DecNumber">1491</span><span class="Other">;</span> <span class="Identifier">password</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">ssl</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">;</span> <span class="Identifier">timeout</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span>
-    <a href="sonic.html#AsyncSonic"><span class="Identifier">AsyncSonic</span></a><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">FutureError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="openAsync,string,int,string,SonicChannel,int"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">openAsync</span><span class="Other">(</span><span class="Identifier">host</span> <span class="Other">=</span> <span class="StringLit">&quot;localhost&quot;</span><span class="Other">;</span> <span class="Identifier">port</span> <span class="Other">=</span> <span class="DecNumber">1491</span><span class="Other">;</span> <span class="Identifier">password</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">channel</span><span class="Other">:</span> <a href="sonic.html#SonicChannel"><span class="Identifier">SonicChannel</span></a><span class="Other">;</span>
+              <span class="Identifier">ssl</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">;</span> <span class="Identifier">timeout</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span><a href="sonic.html#AsyncSonic"><span class="Identifier">AsyncSonic</span></a><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">FutureError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 Open an asynchronous connection to a Sonic server.
 
@@ -1830,7 +1841,7 @@ Sends Help query.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-04-11 17:56:56 UTC</small>
+        <small>Made with Nim. Generated: 2019-05-31 14:39:44 UTC</small>
       </div>
     </div>
   </div>
