@@ -57,7 +57,7 @@ proc raiseForError(response:string): string =
   ##  Returns:
   ##    str the response message
   if isError(response):
-   raise newException(SonicServerError, response)
+    raise newException(SonicServerError, response)
   return response
 
 
@@ -98,6 +98,7 @@ proc openAsync*(host = "localhost", port = 1491, password="", channel:SonicChann
   ## Open an asynchronous connection to a Sonic server.
   result = AsyncSonic(
    socket: newAsyncSocket(buffered = true),
+   channel: channel
   )
   when defined(ssl):
    if ssl == true:
